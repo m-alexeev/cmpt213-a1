@@ -1,4 +1,7 @@
 package cmpt213.assignment1.tasktracker;
+
+import java.util.Scanner;
+
 /**
  * Class for storing displaying the and interacting with the text Menu
  * @author Mikhail Alexeev
@@ -33,13 +36,14 @@ public class TextMenu {
         //Print out title
         int numHashtags = menuTitle.length() + HASHTAG_OFFSET;
         drawHashtagLine(numHashtags);
-        System.out.println("\n" + "# " + menuTitle + " #" );
+        System.out.println("# " + menuTitle + " #" );
         drawHashtagLine(numHashtags);
 
         // Print menu options starting @ 1
         for(int i = 0; i < NUM_OPTIONS; i++){
             System.out.println((i+1) + ": " + MENU_OPTIONS[i]);
         }
+        System.out.print("Choose an option by entering 1 - " + NUM_OPTIONS + ": ");
 
     }
 
@@ -59,10 +63,19 @@ public class TextMenu {
 
     /**
      * Get input from user and display the selected output
-     * @param userInput String containing user input
+     * @return return the menu value specified by user input
      */
-    public void handleUserInput(String userInput){
+    public int handleUserInput(){
+        Scanner scanner = new Scanner(System.in);  // Create a Scanner object
+        String input = scanner.next();
 
+        // Validate Input
+        int parsedInput = Integer.parseInt(input);
+        while(parsedInput < 1 || parsedInput > NUM_OPTIONS){
+            System.out.print("Choose an option by entering 1 - " + NUM_OPTIONS + ": ");
+            parsedInput = Integer.parseInt(scanner.next());
+        }
+        return parsedInput;
     }
 
 }
