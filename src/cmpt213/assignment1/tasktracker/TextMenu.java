@@ -1,5 +1,6 @@
 package cmpt213.assignment1.tasktracker;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 public class TextMenu {
 
-    private String menuTitle = "My to-do list";
+    private String menuTitle;
 
     final int NUM_OPTIONS = 7;
     final int HASHTAG_OFFSET = 4;
@@ -26,7 +27,9 @@ public class TextMenu {
     /**
      * Default constructor to instantiate the class
      */
-    public TextMenu(){}
+    public TextMenu(String menuTitle){
+        this.menuTitle = menuTitle;
+    }
 
 
     /**
@@ -78,4 +81,18 @@ public class TextMenu {
         return parsedInput;
     }
 
+    /**
+     * Lists all tasks in order that the were created
+     * @param tasks Tasks that will be listed
+     */
+    public void listAllTasks(List<Task> tasks){
+        if (tasks.size() == 0){
+            System.out.println("\nNo tasks to show.\n");
+        }else{
+            for (int i = 0; i < tasks.size(); i++){
+                System.out.println("\nTask #" + i);
+                System.out.println(tasks.get(i).toString() + "\n");
+            }
+        }
+    }
 }

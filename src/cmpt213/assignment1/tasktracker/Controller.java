@@ -1,7 +1,7 @@
 package cmpt213.assignment1.tasktracker;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.List;
 
 /**
  * Main controller class for handling application
@@ -10,24 +10,39 @@ import java.util.Scanner;
 
 public class Controller {
 
-    private static final int EXIT_OPTION = 7;
-    private ArrayList<Task> taskList  = new ArrayList<>();
+    private enum OPTION {EMPTY, LIST_ALL,  ADD, REMOVE, MARK_COMPLETE, LIST_OVERDUE, LIST_UPCOM, EXIT }
+    private static List<Task> taskList  = new ArrayList<>();
     /**
      * Entrypoint for the program
      */
     public static void main(String[] args){
         //TODO: Load JSON task file
-        TextMenu menu = new TextMenu();
+        TextMenu menu = new TextMenu("My to-do List");
         menu.displayMenu();
         while (true){
-            int userInput = menu.handleUserInput();
-            if (userInput == EXIT_OPTION) {
+            OPTION userInput = OPTION.values()[menu.handleUserInput()];
+            // Handle different inputs
+            switch (userInput){
+                case LIST_ALL:
+                    menu.listAllTasks(taskList);
+                    break;
+                case ADD:
+                    break;
+                case REMOVE:
+                    break;
+                case MARK_COMPLETE:
+                    break;
+                case LIST_OVERDUE:
+                    break;
+                case LIST_UPCOM:
+                    break;
+            }
+            // Break out of loop
+            if (userInput == OPTION.EXIT) {
                 break;
             }
 
-            //Do other work;
 
-            //Finally show
             menu.displayMenu();
         }
         System.out.println("Thank you for using the system");
