@@ -73,14 +73,14 @@ public class TextMenu {
      */
     public int handleUserInput(){
         Scanner scanner = new Scanner(System.in);  // Create a Scanner object
-        String input = scanner.next();
+        String input = scanner.nextLine();
 
         // Validate Input
         int parsedInput = Integer.parseInt(input);
         while(parsedInput < 1 || parsedInput > NUM_OPTIONS){
             System.out.println("Invalid selection. Enter a number between 1 and " + NUM_OPTIONS);
             System.out.print("Choose an option by entering 1 - " + NUM_OPTIONS + ": ");
-            parsedInput = Integer.parseInt(scanner.next());
+            parsedInput = Integer.parseInt(scanner.nextLine());
         }
         return parsedInput;
     }
@@ -94,7 +94,7 @@ public class TextMenu {
             System.out.println("\nNo tasks to show.\n");
         }else{
             for (int i = 0; i < tasks.size(); i++){
-                System.out.println("\nTask #" + i);
+                System.out.println("\nTask #" + (i + 1) );
                 System.out.println(tasks.get(i).toString() + "\n");
             }
         }
@@ -109,45 +109,59 @@ public class TextMenu {
 
         // Handle user input step by step
         System.out.print("Enter the name of the new task: ");
-        String name = scanner.next();
+        String name = scanner.nextLine();
         // Handle empty names
         while(name.length() == 0){
             System.out.println("Cannot have an empty task name");
-            System.out.print("Enter the name of the new task:");
-            name = scanner.next();
+            System.out.print("Enter the name of the new task: ");
+            name = scanner.nextLine();
         }
         //Notes
         System.out.print("Enter the notes of the new task: ");
-        String notes = scanner.next();
+        String notes = scanner.nextLine();
 
         //Due date
-        System.out.print("Enter the year of the due date: ");
-        int year = handleDateInput(Calendar.getInstance().get(Calendar.YEAR), Integer.MAX_VALUE , "Enter the year of the due date: " );
-        //Year cannot be smaller than current year
+        int year = handleRangeInput(Calendar.getInstance().get(Calendar.YEAR),      //Cannot be smaller than current year
+                Integer.MAX_VALUE, "year",  "Enter the year of the due date: " );
 
-        System.out.print("Enter the month of the due date (1-12): ");
-        int month = handleDateInput(1, 12, "Enter the month of the due date (1-12): ");
+        int month = handleRangeInput(1, 12, "month",
+                "Enter the month of the due date (1-12): ");
 
-        System.out.print("Enter the day of the due date (1-28/29/30/31): ");
-        int day = handleDateInput(1,31 , "Enter the day of the due date (1-28/29/30/31): " );
-
-        //Check if date exists
-        try{
-            LocalDate.of(year,month,day);
-        }catch (Exception e){
-            System.out.println(e);
+        int day = 0;
+        boolean validDate = false;
+        while (!validDate) {
+            day = handleRangeInput(1, 31, "day",
+                    "Enter the day of the due date (1-28/29/30/31): ");
+            //Check if date exists
+            try {
+                LocalDate.of(year, month, day);
+                validDate = true;
+            } catch (Exception e) {
+                System.out.println("Error: this date does not exist");
+            }
         }
 
-        return new Task(name, notes, new GregorianCalendar(year,Calendar.JANUARY,day));
+        int hour = handleRangeInput(0, 23, "hour",
+                    "Enter the hour of the due date (0-23): ");
+
+        int minute = handleRangeInput(0,59, "minute",
+                    "Enter the minute of the due data (0-59): ");
+
+        System.out.println("Task " + name + " has been added to the list of tasks\n");
+        return new Task(name, notes, new GregorianCalendar(year,month, day, hour, minute));
+
     }
 
-    private int handleDateInput(int min, int max, String query){
+    private int handleRangeInput(int min, int max, String item, String query){
+        System.out.print(query);
         Scanner scanner = new Scanner(System.in);
-        int input = Integer.parseInt(scanner.next());
+
+        int input = Integer.parseInt(scanner.nextLine());
         while (input < min || input > max){
-            System.out.println("Error: This is an invalid input");
+            System.out.printf("Error: %s must be between (%d, %d)\n", item , min, max);
+//            System.out.println("Error: " + item + "must be between" + "(" + min + "," + max + ")" );
             System.out.print(query);
-            input = Integer.parseInt(scanner.next());
+            input = Integer.parseInt(scanner.nextLine());
         }
         return input;
     }

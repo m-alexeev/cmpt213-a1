@@ -1,5 +1,7 @@
 package cmpt213.assignment1.tasktracker;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 /**
@@ -33,9 +35,11 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task: " + name + '\'' +
-                "Notes: " + notes + '\'' +
-                "Due Date: " + dueDate + '\'' +
+        DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm");
+        dateFormat.setCalendar(dueDate);
+        return "Task: " + name + "\n" +
+                "Notes: " + notes + "\n" +
+                "Due Date: " + dateFormat.format(dueDate.getTime()) + "\n" +
                 "Completed? " + isCompleted;
     }
 }

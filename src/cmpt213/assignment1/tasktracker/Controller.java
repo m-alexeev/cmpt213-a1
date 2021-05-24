@@ -28,6 +28,7 @@ public class Controller {
                     break;
                 case ADD:
                     Task newTask = menu.addNewTask();
+                    taskList.add(newTask);
                     break;
                 case REMOVE:
                     break;
