@@ -1,10 +1,7 @@
 package cmpt213.assignment1.tasktracker;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Class for storing displaying the and interacting with the text Menu
@@ -14,7 +11,6 @@ import java.util.Scanner;
 public class TextMenu {
 
     private String menuTitle;
-
     final int NUM_OPTIONS = 7;
     final int HASHTAG_OFFSET = 4;
     private final String[] MENU_OPTIONS = new String[]{
@@ -88,9 +84,8 @@ public class TextMenu {
     /**
      * Lists all tasks in order that the were created
      * @param tasks Tasks that will be listed
-     * @param sorted Sort tasks by due date
      */
-    public void listAllTasks(List<Task> tasks, boolean sorted ){
+    public void listAllTasks(List<Task> tasks){
         if (tasks.size() == 0){
             System.out.println("\nNo tasks to show.\n");
         }else{
@@ -149,7 +144,7 @@ public class TextMenu {
                     "Enter the minute of the due data (0-59): ");
 
         System.out.println("Task " + name + " has been added to the list of tasks\n");
-        return new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute));
+        return new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute), false);
 
     }
 
@@ -171,10 +166,10 @@ public class TextMenu {
      * Remove a task selected by the user
      */
     public void removeTask(List<Task> tasks){
-        //TODO: list tasks sorted by due-dates
         //TODO: Prompt to remove task / 0 to cancel
         //TODO: Invalid range handling
         //TODO: Print removed task title
+        Collections.sort(tasks);
 
     }
 

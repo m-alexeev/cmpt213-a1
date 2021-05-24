@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
  * @author Mikhail Alexeev
  */
 
-public class Task {
+public class Task implements Comparable<Task>{
     private String name;
     private String notes;
     private GregorianCalendar dueDate;
@@ -21,17 +21,35 @@ public class Task {
      * @param notes to be recorded
      * @param dueDate date that it is due
      */
-    public Task(String name, String notes, GregorianCalendar dueDate){
+    public Task(String name, String notes, GregorianCalendar dueDate, boolean isCompleted){
         this.name = name;
         this.notes = notes;
         this.dueDate = dueDate;
-        this.isCompleted = false;
+        this.isCompleted = isCompleted;
     }
 
 
     public void markCompleted(boolean completed){
         this.isCompleted = completed;
     }
+
+    public boolean getCompleted(){
+        return this.isCompleted;
+    }
+
+    public GregorianCalendar getDueDate() {
+        return dueDate;
+    }
+
+    @Override
+    public int compareTo(Task o) {
+        return this.dueDate.compareTo(o.getDueDate());
+    }
+
+    /**
+     * ToString method for printing out class info
+     * @return String containing class Info
+     */
 
     @Override
     public String toString() {
@@ -43,4 +61,6 @@ public class Task {
                 "Due Date: " + dateFormat.format(dueDate.getTime()) + "\n" +
                 "Completed? " + completedStr;
     }
+
+
 }
