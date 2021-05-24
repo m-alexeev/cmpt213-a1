@@ -37,9 +37,10 @@ public class Task {
     public String toString() {
         DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm");
         dateFormat.setCalendar(dueDate);
+        String completedStr = isCompleted ? "Yes" : "No";
         return "Task: " + name + "\n" +
                 "Notes: " + notes + "\n" +
                 "Due Date: " + dateFormat.format(dueDate.getTime()) + "\n" +
-                "Completed? " + isCompleted;
+                "Completed? " + completedStr;
     }
 }

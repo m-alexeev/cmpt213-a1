@@ -24,7 +24,7 @@ public class Controller {
             // Handle different inputs
             switch (userInput){
                 case LIST_ALL:
-                    menu.listAllTasks(taskList);
+                    menu.listAllTasks(taskList, false);
                     break;
                 case ADD:
                     Task newTask = menu.addNewTask();

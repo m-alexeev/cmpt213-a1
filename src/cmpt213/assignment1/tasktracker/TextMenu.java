@@ -88,8 +88,9 @@ public class TextMenu {
     /**
      * Lists all tasks in order that the were created
      * @param tasks Tasks that will be listed
+     * @param sorted Sort tasks by due date
      */
-    public void listAllTasks(List<Task> tasks){
+    public void listAllTasks(List<Task> tasks, boolean sorted ){
         if (tasks.size() == 0){
             System.out.println("\nNo tasks to show.\n");
         }else{
@@ -148,7 +149,7 @@ public class TextMenu {
                     "Enter the minute of the due data (0-59): ");
 
         System.out.println("Task " + name + " has been added to the list of tasks\n");
-        return new Task(name, notes, new GregorianCalendar(year,month, day, hour, minute));
+        return new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute));
 
     }
 
@@ -166,5 +167,15 @@ public class TextMenu {
         return input;
     }
 
+    /**
+     * Remove a task selected by the user
+     */
+    public void removeTask(List<Task> tasks){
+        //TODO: list tasks sorted by due-dates
+        //TODO: Prompt to remove task / 0 to cancel
+        //TODO: Invalid range handling
+        //TODO: Print removed task title
+
+    }
 
 }
