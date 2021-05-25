@@ -45,8 +45,6 @@ public class TextMenu {
         for(int i = 0; i < NUM_OPTIONS; i++){
             System.out.println((i+1) + ": " + MENU_OPTIONS[i]);
         }
-        System.out.print("Choose an option by entering 1 - " + NUM_OPTIONS + ": ");
-
     }
 
     /**
@@ -63,22 +61,26 @@ public class TextMenu {
         }
     }
 
-    /**
-     * Get input from user and display the selected output
-     * @return return the menu value specified by user input
-     */
-    public int handleUserInput(){
-        Scanner scanner = new Scanner(System.in);  // Create a Scanner object
-        String input = scanner.nextLine();
 
-        // Validate Input
-        int parsedInput = Integer.parseInt(input);
-        while(parsedInput < 1 || parsedInput > NUM_OPTIONS){
-            System.out.println("Invalid selection. Enter a number between 1 and " + NUM_OPTIONS);
-            System.out.print("Choose an option by entering 1 - " + NUM_OPTIONS + ": ");
-            parsedInput = Integer.parseInt(scanner.nextLine());
+    /**
+     * Get user input based on a range of values
+     * @param min Minimum value that user can input
+     * @param max Maximum value that user can input
+     * @param item The name of the object which the input is collected for
+     * @param query The statement that is displayed to the user - specifying input
+     * @return A valid input from user
+     */
+    public int handleRangeInput(int min, int max, String item, String query){
+        System.out.print(query);
+        Scanner scanner = new Scanner(System.in);
+
+        int input = Integer.parseInt(scanner.nextLine());
+        while (input < min || input > max){
+            System.out.printf("Invalid Input: %s must be between (%d, %d)\n", item , min, max);
+            System.out.print(query);
+            input = Integer.parseInt(scanner.nextLine());
         }
-        return parsedInput;
+        return input;
     }
 
     /**
@@ -98,9 +100,9 @@ public class TextMenu {
 
     /**
      * Create a new task based on user input
-     * @return returns a newly created task
+     * @param taskList The task list that will be updated with new task
      */
-    public Task addNewTask(){
+    public void addNewTask(List<Task> taskList){
         Scanner scanner = new Scanner(System.in);
 
         // Handle user input step by step
@@ -117,16 +119,16 @@ public class TextMenu {
         String notes = scanner.nextLine();
 
         //Due date
-        int year = handleRangeInput(Calendar.getInstance().get(Calendar.YEAR),      //Cannot be smaller than current year
-                Integer.MAX_VALUE, "year",  "Enter the year of the due date: " );
+        int year = handleRangeInput(0, Integer.MAX_VALUE,
+                "Year",  "Enter the year of the due date: " );
 
-        int month = handleRangeInput(1, 12, "month",
+        int month = handleRangeInput(1, 12, "Month",
                 "Enter the month of the due date (1-12): ");
 
         int day = 0;
         boolean validDate = false;
         while (!validDate) {
-            day = handleRangeInput(1, 31, "day",
+            day = handleRangeInput(1, 31, "Day",
                     "Enter the day of the due date (1-28/29/30/31): ");
             //Check if date exists
             try {
@@ -137,48 +139,43 @@ public class TextMenu {
             }
         }
 
-        int hour = handleRangeInput(0, 23, "hour",
+        int hour = handleRangeInput(0, 23, "Hour",
                     "Enter the hour of the due date (0-23): ");
 
-        int minute = handleRangeInput(0,59, "minute",
+        int minute = handleRangeInput(0,59, "Minute",
                     "Enter the minute of the due data (0-59): ");
 
         System.out.println("Task " + name + " has been added to the list of tasks\n");
-        return new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute), false);
+        taskList.add(new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute), false));
 
-    }
-
-    private int handleRangeInput(int min, int max, String item, String query){
-        System.out.print(query);
-        Scanner scanner = new Scanner(System.in);
-
-        int input = Integer.parseInt(scanner.nextLine());
-        while (input < min || input > max){
-            System.out.printf("Error: %s must be between (%d, %d)\n", item , min, max);
-            System.out.print(query);
-            input = Integer.parseInt(scanner.nextLine());
-        }
-        return input;
     }
 
     /**
      * Remove a task selected by the user
+     * @param taskList The task list that will be updated
      */
-    public void removeTask(List<Task> tasks){
-        if (tasks.size() == 0){
+    public void removeTask(List<Task> taskList){
+        if (taskList.size() == 0){
             System.out.println("No tasks to show\n");
             return;
         }
-        Scanner scanner = new Scanner(System.in);
-        Collections.sort(tasks);
-        listAllTasks(tasks);
-        int input = handleRangeInput(0, tasks.size(), "Index",
-                "Enter the task number you want to remove (0 to cancel):");
+        Collections.sort(taskList);    //Sort tasks by due date
+        listAllTasks(taskList);
+        int input = handleRangeInput(0, taskList.size(), "Index",
+                "Enter the task number you want to remove (0 to cancel): ");
         if (input > 0){
-            Task removeTask = tasks.get(input - 1);
+            Task removeTask = taskList.get(input - 1);
             System.out.println("Task " + removeTask.getName() + " is now removed");
-            tasks.remove(input - 1);
+            taskList.remove(input - 1);
         }
+        System.out.println("");
     }
+
+
+    public void markTaskCompleted(List<Task> taskList){
+
+    }
+
+
 
 }

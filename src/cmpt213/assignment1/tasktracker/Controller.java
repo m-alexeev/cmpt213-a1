@@ -27,15 +27,15 @@ public class Controller {
         TextMenu menu = new TextMenu("My to-do List");
         menu.displayMenu();
         while (true){
-            OPTION userInput = OPTION.values()[menu.handleUserInput()];
+            OPTION userInput = OPTION.values()[menu.handleRangeInput(1, 7, "Selection",
+                    "Choose an option by entering 1 - 7: ")];
             // Handle different inputs
             switch (userInput){
                 case LIST_ALL:
                     menu.listAllTasks(taskList);
                     break;
                 case ADD:
-                    Task newTask = menu.addNewTask();
-                    taskList.add(newTask);
+                    menu.addNewTask(taskList);
                     break;
                 case REMOVE:
                     menu.removeTask(taskList);
