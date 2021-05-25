@@ -41,6 +41,10 @@ public class Task implements Comparable<Task>{
         return dueDate;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public int compareTo(Task o) {
         return this.dueDate.compareTo(o.getDueDate());

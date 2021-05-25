@@ -155,7 +155,6 @@ public class TextMenu {
         int input = Integer.parseInt(scanner.nextLine());
         while (input < min || input > max){
             System.out.printf("Error: %s must be between (%d, %d)\n", item , min, max);
-//            System.out.println("Error: " + item + "must be between" + "(" + min + "," + max + ")" );
             System.out.print(query);
             input = Integer.parseInt(scanner.nextLine());
         }
@@ -166,11 +165,20 @@ public class TextMenu {
      * Remove a task selected by the user
      */
     public void removeTask(List<Task> tasks){
-        //TODO: Prompt to remove task / 0 to cancel
-        //TODO: Invalid range handling
-        //TODO: Print removed task title
+        if (tasks.size() == 0){
+            System.out.println("No tasks to show\n");
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
         Collections.sort(tasks);
-
+        listAllTasks(tasks);
+        int input = handleRangeInput(0, tasks.size(), "Index",
+                "Enter the task number you want to remove (0 to cancel):");
+        if (input > 0){
+            Task removeTask = tasks.get(input - 1);
+            System.out.println("Task " + removeTask.getName() + " is now removed");
+            tasks.remove(input - 1);
+        }
     }
 
 }
