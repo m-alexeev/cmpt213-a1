@@ -84,7 +84,7 @@ public class TextMenu {
     }
 
     /**
-     * Lists all tasks in order that the were created
+     * Lists all tasks
      * @param tasks Tasks that will be listed
      */
     public void listAllTasks(List<Task> tasks){
@@ -97,6 +97,18 @@ public class TextMenu {
             }
         }
     }
+
+    public void listIncompleteTasks(List<Task> incompleteTasks, String type ){
+        if (incompleteTasks.size() == 0){
+            System.out.println("No " + type + " incomplete tasks to show");
+        }else{
+            for (int i = 0; i < incompleteTasks.size(); i++){
+                System.out.println("\nTask #" + (i + 1) );
+                System.out.println(incompleteTasks.get(i).toString() + "\n");
+            }
+        }
+    }
+
 
     /**
      * Create a new task based on user input
@@ -172,9 +184,36 @@ public class TextMenu {
     }
 
 
-    public void markTaskCompleted(List<Task> taskList){
+    /**
+     * Prompt user for task they want to mark as completed.
+     * @param taskList The list of task which can be manipulated.
+     */
+    public void markTaskCompleted(List<Task> taskList) {
+        Collections.sort(taskList);
+        List<Task> incompleteTasks = getIncompleteTasks(taskList);
+        listIncompleteTasks(incompleteTasks, "");
 
+        int input = handleRangeInput(0, incompleteTasks.size(), "Index",
+                "Enter the task number you want to mark as completed (0 to cancel): ");
+        if (input > 0) {
+            Task markComplete = incompleteTasks.get(input - 1);
+            taskList.get(taskList.indexOf(markComplete)).markCompleted(true);
+            System.out.println("Task " + markComplete.getName() + " is now completed.");
+        }
+        System.out.println("");
     }
+
+
+    private List<Task> getIncompleteTasks(List<Task> taskList){
+        List<Task> incompleteTasks = new ArrayList<>();
+        for (Task task : taskList){
+            if (!task.isCompleted()){
+                incompleteTasks.add(task);
+            }
+        }
+        return incompleteTasks;
+    }
+
 
 
 

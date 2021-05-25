@@ -33,7 +33,7 @@ public class Task implements Comparable<Task>{
         this.isCompleted = completed;
     }
 
-    public boolean getCompleted(){
+    public boolean isCompleted(){
         return this.isCompleted;
     }
 

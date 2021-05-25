@@ -41,6 +41,7 @@ public class Controller {
                     menu.removeTask(taskList);
                     break;
                 case MARK_COMPLETE:
+                    menu.markTaskCompleted(taskList);
                     break;
                 case LIST_OVERDUE:
                     break;
