@@ -1,6 +1,7 @@
 package cmpt213.assignment1.tasktracker;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.*;
 
 /**
@@ -98,9 +99,9 @@ public class TextMenu {
         }
     }
 
-    public void listIncompleteTasks(List<Task> incompleteTasks, String type ){
+    private void listIncompleteTasks(List<Task> incompleteTasks, String type ){
         if (incompleteTasks.size() == 0){
-            System.out.println("No " + type + " incomplete tasks to show");
+            System.out.println("\nNo " + type + "incomplete tasks to show\n");
         }else{
             for (int i = 0; i < incompleteTasks.size(); i++){
                 System.out.println("\nTask #" + (i + 1) );
@@ -158,7 +159,7 @@ public class TextMenu {
                     "Enter the minute of the due data (0-59): ");
 
         System.out.println("Task " + name + " has been added to the list of tasks\n");
-        taskList.add(new Task(name, notes, new GregorianCalendar(year,month - 1, day, hour, minute), false));
+        taskList.add(new Task(name, notes, new GregorianCalendar(year, month - 1  , day, hour, minute), false));
 
     }
 
@@ -180,7 +181,7 @@ public class TextMenu {
             System.out.println("Task " + removeTask.getName() + " is now removed");
             taskList.remove(input - 1);
         }
-        System.out.println("");
+        System.out.println();
     }
 
 
@@ -200,9 +201,36 @@ public class TextMenu {
             taskList.get(taskList.indexOf(markComplete)).markCompleted(true);
             System.out.println("Task " + markComplete.getName() + " is now completed.");
         }
-        System.out.println("");
+        System.out.println();
     }
 
+    /**
+     * Lists upcoming / overdue incomplete tasks
+     * @param taskList Task list which will be used to retrieve incomplete tasks
+     * @param isUpcoming If true => shows upcoming tasks, otherwise => shows overdue tasks
+     */
+    public void incompleteTasks(List<Task> taskList, boolean isUpcoming){
+        List<Task> incompleteTasks = getIncompleteTasks(taskList);
+        List<Task> filteredTasks = new ArrayList<>();
+        long today = new Date().getTime();
+        for (Task task: incompleteTasks){
+            //Add only upcoming tasks
+            if (isUpcoming && today <=  task.getDueDate().getTimeInMillis()){
+                filteredTasks.add(task);
+            }
+            //Add on only overdue tasks
+            else if (!isUpcoming && today > task.getDueDate().getTimeInMillis()){
+                filteredTasks.add(task);
+            }
+        }
+        Collections.sort(filteredTasks);
+        if (isUpcoming){
+            listIncompleteTasks(filteredTasks, "upcoming");
+        }else{
+            listIncompleteTasks(filteredTasks, "overdue");
+        }
+
+    }
 
     private List<Task> getIncompleteTasks(List<Task> taskList){
         List<Task> incompleteTasks = new ArrayList<>();

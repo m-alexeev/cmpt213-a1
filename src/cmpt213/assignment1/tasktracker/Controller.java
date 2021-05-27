@@ -4,6 +4,7 @@ import com.google.gson.*;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class Controller {
 
     private enum OPTION {EMPTY, LIST_ALL,  ADD, REMOVE, MARK_COMPLETE, LIST_OVERDUE, LIST_UPCOM, EXIT }
+    private static final boolean UPCOMING = true;
     private static final String JSON_PATH = "tasks.json";
     private static List<Task> taskList  = new ArrayList<>();
     /**
@@ -30,23 +32,13 @@ public class Controller {
             OPTION userInput = OPTION.values()[menu.handleRangeInput(1, 7, "Selection",
                     "Choose an option by entering 1 - 7: ")];
             // Handle different inputs
-            switch (userInput){
-                case LIST_ALL:
-                    menu.listAllTasks(taskList);
-                    break;
-                case ADD:
-                    menu.addNewTask(taskList);
-                    break;
-                case REMOVE:
-                    menu.removeTask(taskList);
-                    break;
-                case MARK_COMPLETE:
-                    menu.markTaskCompleted(taskList);
-                    break;
-                case LIST_OVERDUE:
-                    break;
-                case LIST_UPCOM:
-                    break;
+            switch (userInput) {
+                case LIST_ALL -> menu.listAllTasks(taskList);
+                case ADD -> menu.addNewTask(taskList);
+                case REMOVE -> menu.removeTask(taskList);
+                case MARK_COMPLETE -> menu.markTaskCompleted(taskList);
+                case LIST_OVERDUE -> menu.incompleteTasks(taskList, !UPCOMING);
+                case LIST_UPCOM -> menu.incompleteTasks(taskList, UPCOMING);
             }
             // Break out of loop
             if (userInput == OPTION.EXIT) {
@@ -100,7 +92,6 @@ public class Controller {
             writer.flush();
             writer.close();
         }catch (IOException e){
-            System.out.println(e);
             e.printStackTrace();
         }
     }
