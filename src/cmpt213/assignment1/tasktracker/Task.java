@@ -54,7 +54,6 @@ public class Task implements Comparable<Task>{
      * ToString method for printing out class info
      * @return String containing class Info
      */
-
     @Override
     public String toString() {
         DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm");
@@ -66,5 +65,16 @@ public class Task implements Comparable<Task>{
                 "Completed? " + completedStr;
     }
 
+    /**
+     * ToString method for print class info without status
+     * @return String containing class info without completion status
+     */
+    public String toStringNoStatus(){
+        DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm");
+        dateFormat.setCalendar(dueDate);
+        return "Task: " + name + "\n" +
+                "Notes: " + notes + "\n" +
+                "Due Date: " + dateFormat.format(dueDate.getTime());
+    }
 
 }

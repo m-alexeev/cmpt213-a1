@@ -101,11 +101,11 @@ public class TextMenu {
 
     private void listIncompleteTasks(List<Task> incompleteTasks, String type ){
         if (incompleteTasks.size() == 0){
-            System.out.println("\nNo " + type + "incomplete tasks to show\n");
+            System.out.println("\nNo " + type + " incomplete tasks to show\n");
         }else{
             for (int i = 0; i < incompleteTasks.size(); i++){
                 System.out.println("\nTask #" + (i + 1) );
-                System.out.println(incompleteTasks.get(i).toString() + "\n");
+                System.out.println(incompleteTasks.get(i).toStringNoStatus() + "\n");
             }
         }
     }
