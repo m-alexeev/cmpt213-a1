@@ -121,6 +121,7 @@ public class TextMenu {
         // Handle user input step by step
         System.out.print("Enter the name of the new task: ");
         String name = scanner.nextLine();
+        name = name.trim(); // Trim trailing and leading whitespaces
         // Handle empty names
         while(name.length() == 0){
             System.out.println("Cannot have an empty task name");
