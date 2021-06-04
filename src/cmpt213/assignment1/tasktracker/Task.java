@@ -6,10 +6,11 @@ import java.util.GregorianCalendar;
 
 /**
  * Class for storing Task information
+ *
  * @author Mikhail Alexeev
  */
 
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
     private String name;
     private String notes;
     private GregorianCalendar dueDate;
@@ -17,11 +18,12 @@ public class Task implements Comparable<Task>{
 
     /**
      * Main Constructor to create Task
-     * @param name of note
-     * @param notes to be recorded
+     *
+     * @param name    of note
+     * @param notes   to be recorded
      * @param dueDate date that it is due
      */
-    public Task(String name, String notes, GregorianCalendar dueDate, boolean isCompleted){
+    public Task(String name, String notes, GregorianCalendar dueDate, boolean isCompleted) {
         this.name = name;
         this.notes = notes;
         this.dueDate = dueDate;
@@ -29,11 +31,11 @@ public class Task implements Comparable<Task>{
     }
 
 
-    public void markCompleted(boolean completed){
+    public void markCompleted(boolean completed) {
         this.isCompleted = completed;
     }
 
-    public boolean isCompleted(){
+    public boolean isCompleted() {
         return this.isCompleted;
     }
 
@@ -52,6 +54,7 @@ public class Task implements Comparable<Task>{
 
     /**
      * ToString method for printing out class info
+     *
      * @return String containing class Info
      */
     @Override
@@ -67,9 +70,10 @@ public class Task implements Comparable<Task>{
 
     /**
      * ToString method for print class info without status
+     *
      * @return String containing class info without completion status
      */
-    public String toStringNoStatus(){
+    public String toStringNoStatus() {
         DateFormat dateFormat = new SimpleDateFormat("yyy-MM-dd HH:mm");
         dateFormat.setCalendar(dueDate);
         return "Task: " + name + "\n" +

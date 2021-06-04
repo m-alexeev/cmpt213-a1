@@ -9,25 +9,27 @@ import java.util.List;
 
 /**
  * Main controller class for handling application
+ *
  * @author Mikhail Alexeev
  */
 
 public class Controller {
 
-    private enum OPTION {EMPTY, LIST_ALL,  ADD, REMOVE, MARK_COMPLETE, LIST_OVERDUE, LIST_UPCOM, EXIT }
+    private enum OPTION {EMPTY, LIST_ALL, ADD, REMOVE, MARK_COMPLETE, LIST_OVERDUE, LIST_UPCOM, EXIT}
+
     private static final boolean UPCOMING = true;
     private static final String JSON_PATH = "tasks.json";
-    private static List<Task> taskList  = new ArrayList<>();
+    private static List<Task> taskList = new ArrayList<>();
+
     /**
      * Entrypoint for the program
      */
-    public static void main(String[] args)  {
-        //TODO: Load JSON task file
+    public static void main(String[] args) {
         loadFromJson();
 
-        TextMenu menu = new TextMenu("My to-do List");
+        TextMenu menu = new TextMenu();
         menu.displayMenu();
-        while (true){
+        while (true) {
             OPTION userInput = OPTION.values()[menu.handleRangeInput(1, 7, "Selection",
                     "Choose an option by entering 1 - 7: ")];
             // Handle different inputs
@@ -52,12 +54,13 @@ public class Controller {
     }
 
 
-    private static void loadFromJson(){
+    private static void loadFromJson() {
         File file = new File(JSON_PATH);
         try {
             JsonElement fileElement = JsonParser.parseReader(new FileReader(file));
-            JsonArray jsonArray  = fileElement.getAsJsonArray();
-            for (int i = 0; i < jsonArray.size(); i ++){
+
+            JsonArray jsonArray = fileElement.getAsJsonArray();
+            for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject taskObj = jsonArray.get(i).getAsJsonObject();
                 JsonObject taskDate = taskObj.get("dueDate").getAsJsonObject();
                 taskList.add(new Task(
@@ -75,7 +78,7 @@ public class Controller {
             }
 
         } catch (FileNotFoundException e) {
-            System.out.println("Tasks Json does not yet exist, nothing to load");
+            System.out.println("Tasks list does not yet exist, nothing to load");
         }
     }
 
@@ -83,14 +86,14 @@ public class Controller {
     /**
      * Saves the taskList to a json file
      */
-    private static void saveToJson(){
+    private static void saveToJson() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         try {
             Writer writer = new FileWriter(JSON_PATH);
             gson.toJson(taskList, writer);
             writer.flush();
             writer.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
